@@ -1261,14 +1261,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "solc"
-version = "0.2.22"
-dependencies = [
- "anyhow",
- "svm-rs",
-]
-
-[[package]]
 name = "spin"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1287,27 +1279,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
-name = "svm"
+name = "svm-rs"
 version = "0.2.22"
 dependencies = [
  "anyhow",
  "clap",
  "console",
  "dialoguer",
- "indicatif",
- "itertools",
- "semver",
- "svm-rs",
- "tokio",
-]
-
-[[package]]
-name = "svm-rs"
-version = "0.2.22"
-dependencies = [
  "fs2",
  "hex",
  "home",
+ "indicatif",
+ "itertools",
  "once_cell",
  "rand",
  "reqwest",
@@ -1324,7 +1307,7 @@ dependencies = [
 
 [[package]]
 name = "svm-rs-builds"
-version = "0.2.22"
+version = "0.1.14"
 dependencies = [
  "build_const",
  "hex",

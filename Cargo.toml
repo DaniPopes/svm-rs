@@ -1,12 +1,3 @@
 [workspace]
-members = ["crates/solc", "crates/svm-bin", "crates/svm-builds", "crates/svm-lib"]
+members = ["crates/svm-builds", "crates/svm-rs"]
 resolver = "2"
-
-[workspace.package]
-version = "0.2.22"
-edition = "2021"
-authors = ["Rohit Narurkar <rohit.narurkar@protonmail.com>"]
-license = "MIT OR Apache-2.0"
-readme = "README.md"
-repository = "https://github.com/roynalnaruto/svm-rs"
-homepage = "https://github.com/roynalnaruto/svm-rs"

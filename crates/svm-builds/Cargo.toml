@@ -1,19 +1,20 @@
 [package]
 name = "svm-rs-builds"
+version = "0.1.14"
+edition = "2021"
+rust-version = "1.65"
 authors = [
     "Matthias Seitz <matthias.seitz@outlook.de>",
     "Rohit Narurkar <rohit.narurkar@protonmail.com>",
 ]
-description = "Solidity-Compiler (Solc) builds"
-
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
-homepage.workspace = true
+license = "MIT OR Apache-2.0"
+readme = "../../README.md"
+repository = "https://github.com/roynalnaruto/svm-rs"
+homepage = "https://github.com/roynalnaruto/svm-rs"
+description = "Solidity compiler Version Manager builds"
 
 [build-dependencies]
-svm-rs = { path = "../svm-lib", version = "0.2.22", features = ["blocking"] }
+svm-rs = { path = "../svm-rs", version = "0.2.22", features = ["blocking"] }
 
 build_const = "0.2.2"
 hex = "0.4.3"
