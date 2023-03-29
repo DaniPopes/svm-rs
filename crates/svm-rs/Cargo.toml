@@ -10,6 +10,10 @@ repository = "https://github.com/roynalnaruto/svm-rs"
 homepage = "https://github.com/roynalnaruto/svm-rs"
 description = "Solidity compiler Version Manager"
 
+[lib]
+name = "svm_lib"
+path = "src/lib.rs"
+
 [[bin]]
 name = "svm"
 path = "src/bin/svm-bin/main.rs"

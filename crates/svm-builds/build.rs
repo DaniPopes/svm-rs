@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
 use semver::Version;
-use svm_rs::Releases;
+use svm::Releases;
 
-/// The string describing the [svm_rs::Platform] to build for
+/// The string describing the [svm::Platform] to build for
 ///
 /// Supported values are:
 ///
@@ -16,13 +16,13 @@ pub const SVM_TARGET_PLATFORM: &str = "SVM_TARGET_PLATFORM";
 
 /// Returns the platform to generate the constants for
 ///
-/// if the `SVM_TARGET_PLATFORM` var is set, this will return the matching [svm_rs::Platform],
-/// otherwise the native platform will be used [svm_rs::platform()].
-fn get_platform() -> svm_rs::Platform {
+/// if the `SVM_TARGET_PLATFORM` var is set, this will return the matching [svm::Platform],
+/// otherwise the native platform will be used [svm::platform()].
+fn get_platform() -> svm::Platform {
     if let Ok(s) = std::env::var(SVM_TARGET_PLATFORM) {
         s.parse().unwrap()
     } else {
-        svm_rs::platform()
+        svm::platform()
     }
 }
 
@@ -37,7 +37,7 @@ fn version_const_name(version: &Version) -> String {
 fn add_build_info_constants(
     writer: &mut build_const::ConstValueWriter,
     releases: &Releases,
-    platform: svm_rs::Platform,
+    platform: svm::Platform,
 ) {
     let mut version_idents = Vec::with_capacity(releases.builds.len());
     let mut checksum_match_arms = Vec::with_capacity(releases.builds.len());
@@ -98,10 +98,10 @@ pub fn get_checksum(version: &semver::Version) -> Option<Vec<u8>> {{
 }
 
 /// checks the current platform and adds it as constant
-fn add_platform_const(writer: &mut build_const::ConstValueWriter, platform: svm_rs::Platform) {
+fn add_platform_const(writer: &mut build_const::ConstValueWriter, platform: svm::Platform) {
     writer.add_raw(&format!(
         r#"
-/// The `svm_rs::Platform` all constants were built for
+/// The `svm::Platform` all constants were built for
 pub const TARGET_PLATFORM: &str = "{}";
 "#,
         platform
@@ -110,7 +110,7 @@ pub const TARGET_PLATFORM: &str = "{}";
 
 fn generate() {
     let platform = get_platform();
-    let releases = svm_rs::blocking_all_releases(platform).expect("Failed to fetch releases");
+    let releases = svm::blocking_all_releases(platform).expect("Failed to fetch releases");
 
     let mut writer = build_const::ConstWriter::for_build("builds")
         .unwrap()

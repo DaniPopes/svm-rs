@@ -23,7 +23,7 @@ enum SolcVm {
 async fn main() -> anyhow::Result<()> {
     let opt = SolcVm::parse();
 
-    svm_rs::setup_home()?;
+    svm_lib::setup_home()?;
 
     match opt {
         SolcVm::List => {
@@ -39,10 +39,10 @@ async fn main() -> anyhow::Result<()> {
         }
         SolcVm::Remove { version } => match version.as_str() {
             "ALL" | "all" => {
-                for v in svm_rs::installed_versions().unwrap_or_default() {
-                    svm_rs::remove_version(&v)?;
+                for v in svm_lib::installed_versions().unwrap_or_default() {
+                    svm_lib::remove_version(&v)?;
                 }
-                svm_rs::unset_global_version()?;
+                svm_lib::unset_global_version()?;
             }
             _ => handle_remove(Version::parse(&version)?)?,
         },
@@ -52,9 +52,9 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn handle_list() -> anyhow::Result<()> {
-    let all_versions = svm_rs::all_versions().await?;
-    let installed_versions = svm_rs::installed_versions().unwrap_or_default();
-    let current_version = svm_rs::current_version()?;
+    let all_versions = svm_lib::all_versions().await?;
+    let installed_versions = svm_lib::installed_versions().unwrap_or_default();
+    let current_version = svm_lib::current_version()?;
 
     let a: HashSet<Version> = all_versions.iter().cloned().collect();
     let b: HashSet<Version> = installed_versions.iter().cloned().collect();
@@ -71,9 +71,9 @@ async fn handle_list() -> anyhow::Result<()> {
 }
 
 async fn handle_install(version: Version) -> anyhow::Result<()> {
-    let all_versions = svm_rs::all_versions().await?;
-    let installed_versions = svm_rs::installed_versions().unwrap_or_default();
-    let current_version = svm_rs::current_version()?;
+    let all_versions = svm_lib::all_versions().await?;
+    let installed_versions = svm_lib::installed_versions().unwrap_or_default();
+    let current_version = svm_lib::current_version()?;
 
     if installed_versions.contains(&version) {
         println!("Solc {version} is already installed");
@@ -83,15 +83,15 @@ async fn handle_install(version: Version) -> anyhow::Result<()> {
             .default("N".into())
             .interact_text()?;
         if matches!(input.as_str(), "y" | "Y" | "yes" | "Yes") {
-            svm_rs::use_version(&version)?;
+            svm_lib::use_version(&version)?;
             print::set_global_version(&version);
         }
     } else if all_versions.contains(&version) {
         let spinner = print::installing_version(&version);
-        svm_rs::install(&version).await?;
+        svm_lib::install(&version).await?;
         spinner.finish_with_message(format!("Downloaded Solc: {version}"));
         if current_version.is_none() {
-            svm_rs::use_version(&version)?;
+            svm_lib::use_version(&version)?;
             print::set_global_version(&version);
         }
     } else {
@@ -102,11 +102,11 @@ async fn handle_install(version: Version) -> anyhow::Result<()> {
 }
 
 async fn handle_use(version: Version) -> anyhow::Result<()> {
-    let all_versions = svm_rs::all_versions().await?;
-    let installed_versions = svm_rs::installed_versions().unwrap_or_default();
+    let all_versions = svm_lib::all_versions().await?;
+    let installed_versions = svm_lib::installed_versions().unwrap_or_default();
 
     if installed_versions.contains(&version) {
-        svm_rs::use_version(&version)?;
+        svm_lib::use_version(&version)?;
         print::set_global_version(&version);
     } else if all_versions.contains(&version) {
         println!("Solc {version} is not installed");
@@ -126,8 +126,8 @@ async fn handle_use(version: Version) -> anyhow::Result<()> {
 }
 
 fn handle_remove(version: Version) -> anyhow::Result<()> {
-    let mut installed_versions = svm_rs::installed_versions().unwrap_or_default();
-    let current_version = svm_rs::current_version()?;
+    let mut installed_versions = svm_lib::installed_versions().unwrap_or_default();
+    let current_version = svm_lib::current_version()?;
 
     if installed_versions.contains(&version) {
         let input: String = Input::new()
@@ -136,16 +136,16 @@ fn handle_remove(version: Version) -> anyhow::Result<()> {
             .default("N".into())
             .interact_text()?;
         if matches!(input.as_str(), "y" | "Y" | "yes" | "Yes") {
-            svm_rs::remove_version(&version)?;
+            svm_lib::remove_version(&version)?;
             if let Some(v) = current_version {
                 if version == v {
                     if let Some(i) = installed_versions.iter().position(|x| *x == v) {
                         installed_versions.remove(i);
                         if let Some(new_version) = installed_versions.pop() {
-                            svm_rs::use_version(&new_version)?;
+                            svm_lib::use_version(&new_version)?;
                             print::set_global_version(&new_version);
                         } else {
-                            svm_rs::unset_global_version()?;
+                            svm_lib::unset_global_version()?;
                         }
                     }
                 }
