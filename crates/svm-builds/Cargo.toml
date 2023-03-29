@@ -16,6 +16,7 @@ description = "Solidity compiler builds"
 [build-dependencies]
 svm = { package = "svm-rs", path = "../svm-rs", version = "0.2.22", default-features = false, features = [
     "blocking",
+    "rustls",
 ] }
 
 build_const = "0.2.2"
