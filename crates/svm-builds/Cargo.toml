@@ -11,7 +11,7 @@ license = "MIT OR Apache-2.0"
 readme = "../../README.md"
 repository = "https://github.com/roynalnaruto/svm-rs"
 homepage = "https://github.com/roynalnaruto/svm-rs"
-description = "Solidity compiler Version Manager builds"
+description = "Solidity compiler builds"
 
 [build-dependencies]
 svm-rs = { path = "../svm-rs", version = "0.2.22", features = ["blocking"] }
